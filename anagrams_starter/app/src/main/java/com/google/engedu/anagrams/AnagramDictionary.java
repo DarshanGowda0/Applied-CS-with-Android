@@ -17,6 +17,9 @@ public class AnagramDictionary {
     private static final int MAX_WORD_LENGTH = 7;
     private Random random = new Random();
 
+    private int wordLength = DEFAULT_WORD_LENGTH;
+
+
     public ArrayList<String> wordList = new ArrayList<>();
     public HashMap<String, ArrayList<String>> lettersToWord = new HashMap<>();
     public HashSet<String> wordSet = new HashSet<>();
@@ -113,7 +116,28 @@ public class AnagramDictionary {
     }
 
     public String pickGoodStarterWord() {
-        return "stop";
+
+        while (true) {
+
+            //generate a random number between 0 - 9999
+            Random random = new Random();
+            int num = random.nextInt(10000);
+
+            //pick random word from the arrayList
+            String randomWord = wordList.get(num);
+
+            //get all the anagrams for that random word
+            ArrayList<String> arrayList = getAnagramsWithOneMoreLetter(randomWord);
+
+            //validate the conditions given
+            if ((randomWord.length() == wordLength) && arrayList.size() > MIN_NUM_ANAGRAMS) {
+
+                //increment the wordLength for next stage
+                if (wordLength < MAX_WORD_LENGTH) wordLength++;
+                return randomWord;
+            }
+        }
+
     }
 
     public String sortLetters(String word) {
