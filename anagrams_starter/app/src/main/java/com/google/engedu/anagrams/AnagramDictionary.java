@@ -6,6 +6,8 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Random;
 
 public class AnagramDictionary {
@@ -16,17 +18,35 @@ public class AnagramDictionary {
     private Random random = new Random();
 
     public ArrayList<String> wordList = new ArrayList<>();
+    public HashMap<String, ArrayList<String>> lettersToWord = new HashMap<>();
+    public HashSet<String> wordSet = new HashSet<>();
 
     public AnagramDictionary(InputStream wordListStream) throws IOException {
 
 
         BufferedReader in = new BufferedReader(new InputStreamReader(wordListStream));
         String line;
-        while((line = in.readLine()) != null) {
+        while ((line = in.readLine()) != null) {
             String word = line.trim();
 
             //add to the arrayList data structure
             wordList.add(word);
+
+            //add the same word to a hashSet and hashMap
+            wordSet.add(word);
+
+            String sortedWord = sortLetters(word);
+
+            //if hm already contains the key, we add it to the same key
+            if (lettersToWord.containsKey(sortedWord)) {
+                lettersToWord.get(sortedWord).add(word);
+            }
+            //else we create a new arrayList and add that as the value to that key in the hm
+            else {
+                ArrayList<String> temp = new ArrayList<>();
+                temp.add(word);
+                lettersToWord.put(sortedWord, temp);
+            }
 
         }
     }
@@ -42,12 +62,12 @@ public class AnagramDictionary {
         String sortedTargetWord = sortLetters(targetWord);
 
         //first step is to iterate through all 10000 words and find the anagrams
-        for(String word : wordList){
+        for (String word : wordList) {
             //sort the word
             String sortedWord = sortLetters(word);
 
             //if it matches to sortedTargetWord, then it's an anagram of it
-            if(sortedTargetWord.equals(sortedWord)){
+            if (sortedTargetWord.equals(sortedWord)) {
                 //add the original word
                 result.add(word);
             }
