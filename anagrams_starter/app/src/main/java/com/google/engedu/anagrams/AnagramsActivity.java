@@ -31,6 +31,8 @@ public class AnagramsActivity extends AppCompatActivity {
     private String currentWord;
     private ArrayList<String> anagrams;
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
