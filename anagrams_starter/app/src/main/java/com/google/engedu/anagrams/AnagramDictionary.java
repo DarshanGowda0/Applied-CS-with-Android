@@ -101,11 +101,15 @@ public class AnagramDictionary {
                 ArrayList<String> tempList = lettersToWord.get(key);
 
                 //check if the obtained words are notGoodWords again
+                ArrayList<String> removeList = new ArrayList<>();
                 for (String test : tempList) {
                     if (!isGoodWord(test, word)) {
-                        tempList.remove(test);
+                        removeList.add(test);
                     }
                 }
+
+                //remove all the notGoodWords
+                result.removeAll(removeList);
 
                 //add the list to the remaining list to be returned
                 result.addAll(tempList);
