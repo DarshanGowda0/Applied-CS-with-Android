@@ -24,6 +24,8 @@ public class AnagramDictionary {
     public HashMap<String, ArrayList<String>> lettersToWord = new HashMap<>();
     public HashSet<String> wordSet = new HashSet<>();
 
+    public HashMap<Integer, ArrayList<String>> sizeToWords = new HashMap<>();
+
     public AnagramDictionary(InputStream wordListStream) throws IOException {
 
 
@@ -49,6 +51,15 @@ public class AnagramDictionary {
                 ArrayList<String> temp = new ArrayList<>();
                 temp.add(word);
                 lettersToWord.put(sortedWord, temp);
+            }
+
+            //check word length and store in sizeToWords
+            if (sizeToWords.containsKey(word.length())) {
+                sizeToWords.get(word.length()).add(word);
+            } else {
+                ArrayList<String> temp = new ArrayList<>();
+                temp.add(word);
+                sizeToWords.put(word.length(), temp);
             }
 
         }
@@ -123,12 +134,17 @@ public class AnagramDictionary {
 
         while (true) {
 
-            //generate a random number between 0 - 9999
+            //get all words with 3/4/5 letters and pick from them only
+            ArrayList<String> tempList = sizeToWords.get(wordLength);
+
+            //generate a random number between 0 and sizeOf list obtained
             Random random = new Random();
-            int num = random.nextInt(10000);
+            int num = random.nextInt(tempList.size());
+
 
             //pick random word from the arrayList
-            String randomWord = wordList.get(num);
+//            String randomWord = wordList.get(num);
+            String randomWord = tempList.get(num);
 
             //get all the anagrams for that random word
             ArrayList<String> arrayList = getAnagramsWithOneMoreLetter(randomWord);
