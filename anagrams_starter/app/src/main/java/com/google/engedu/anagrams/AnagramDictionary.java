@@ -52,7 +52,9 @@ public class AnagramDictionary {
     }
 
     public boolean isGoodWord(String word, String base) {
-        return true;
+
+        //if valid, then hashSet has that word in it && the word should not be a subString of the baseWord; i.e prefix or postfix
+        return wordSet.contains(word) && !word.contains(base);
     }
 
     public ArrayList<String> getAnagrams(String targetWord) {
