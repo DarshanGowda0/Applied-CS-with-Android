@@ -55,6 +55,8 @@ public class MainActivity extends AppCompatActivity {
 
     public void rollButtonClick(View view) {
 
+        Log.d(TAG, "rollButtonClick called ");
+
         int rolledNumber = rollDice();
         imageView.setImageResource(drawables[rolledNumber]);
 
@@ -73,6 +75,53 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void computerTurn() {
+
+        Log.d(TAG, "computerTurn called ");
+
+        //disable all the buttons first
+        enableButtons(false);
+
+        //infinite loop until computer loses turn
+        while (true) {
+            //roll dice by comp
+            int computerRolledNumber = rollDice();
+            imageView.setImageResource(drawables[computerRolledNumber]);
+            computerRolledNumber++;
+
+            Log.d(TAG, "computerTurn: " + computerRolledNumber);
+
+            //if comp rolled 1, make the turnScore 0, update the labels and enable the buttons
+            if (computerRolledNumber == 1) {
+                computerTurnScore = 0;
+                labelText = userScoreLabel + userOverallScore + compScoreLabel + computerOverallScore + userTurnScoreLabel + userTurnScore
+                        + "\n computer rolled a one and lost it's chance";
+                enableButtons(true);
+                label.setText(Html.fromHtml(labelText));
+                return;
+            }
+
+            //else add the score to turnScore and update the label
+            else {
+                computerTurnScore += computerRolledNumber;
+                labelText = userScoreLabel + userOverallScore + compScoreLabel + computerOverallScore + userTurnScoreLabel + userTurnScore
+                        + "\nComputer rolled a " + computerRolledNumber;
+                label.setText(Html.fromHtml(labelText));
+            }
+
+            //hold strategy for comp...if turnScore is > 20 then hold and save the turnScore and exit from this function, also enable the buttons
+            if (computerTurnScore > 20) {
+                computerOverallScore += computerTurnScore;
+                computerTurnScore = 0;
+                labelText = userScoreLabel + userOverallScore + compScoreLabel + computerOverallScore + "\n" +
+                        "Computer holds";
+
+                label.setText(Html.fromHtml(labelText));
+
+                enableButtons(true);
+
+                return;
+            }
+        }
 
     }
 
@@ -98,6 +147,7 @@ public class MainActivity extends AppCompatActivity {
         labelText = userScoreLabel + userOverallScore + compScoreLabel + computerOverallScore;
         label.setText(Html.fromHtml(labelText));
 
+        enableButtons(true);
 
     }
 
@@ -109,5 +159,10 @@ public class MainActivity extends AppCompatActivity {
 
         return randomNumber;
 
+    }
+
+    private void enableButtons(boolean isEnabled) {
+        rollButton.setEnabled(isEnabled);
+        holdButton.setEnabled(isEnabled);
     }
 }
