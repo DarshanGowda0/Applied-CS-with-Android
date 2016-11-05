@@ -10,11 +10,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.Random;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "TEST_TAG";
 
+    Timer myTimer;
 
     public int userOverallScore = 0, userTurnScore = 0;
     public int computerOverallScore = 0, computerTurnScore = 0;
@@ -59,7 +62,6 @@ public class MainActivity extends AppCompatActivity {
 
         int rolledNumber = rollDice();
         imageView.setImageResource(drawables[rolledNumber]);
-
         rolledNumber++;
 
         if (rolledNumber == 1) {
@@ -74,7 +76,119 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private void computerTurn() {
+    public void computerTurn() {
+
+
+        myTimer = new Timer();
+        myTimer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+
+
+                //disable the buttons while computer is playing
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        enableButtons(false);
+                    }
+                });
+
+                //roll dice for comp
+                int computerRolledNumber = rollDice();
+
+                //update the image on the ui thread
+                final int finalComputerRolledNumber = computerRolledNumber;
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        imageView.setImageResource(drawables[finalComputerRolledNumber]);
+                    }
+                });
+
+                computerRolledNumber++;
+
+                //if computer looses, set turnSCore to 0 and enable buttons for user's turn
+                if (computerRolledNumber == 1) {
+                    computerTurnScore = 0;
+                    labelText = userScoreLabel + userOverallScore + compScoreLabel + computerOverallScore + userTurnScoreLabel + userTurnScore +
+                            "\n computer rolled a one and lost it's chance";
+
+
+                    //enable buttons, on ui thread
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            enableButtons(true);
+                        }
+                    });
+
+                    //update the label
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            label.setText(Html.fromHtml(labelText));
+                        }
+                    });
+
+                    //cancel the timer, this is exiting out of function
+                    myTimer.cancel();
+
+                }
+
+                //if not 1, add the score to turn score
+                else {
+                    computerTurnScore += computerRolledNumber;
+                    labelText = userScoreLabel + userOverallScore + compScoreLabel + computerOverallScore + userTurnScoreLabel + userTurnScore
+                            + "\nComputer rolled a " + computerRolledNumber
+                            + compTurnScoreLabel + computerTurnScore;
+
+                    //update the label
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            label.setText(Html.fromHtml(labelText));
+                        }
+                    });
+
+                    //if the turn score is greater than 20 stop rolling and hold(update the comp score and cancel timer)
+                    if (computerTurnScore > 20) {
+
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                enableButtons(true);
+                            }
+                        });
+
+                        computerOverallScore += computerTurnScore;
+                        computerTurnScore = 0;
+                        labelText = userScoreLabel + userOverallScore + compScoreLabel + computerOverallScore + "\nComputer holds";
+
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                label.setText(Html.fromHtml(labelText));
+                            }
+                        });
+
+
+                        myTimer.cancel();
+
+
+                    }
+
+                }
+
+            }
+
+        }, 0, 2000);
+
+
+    }
+
+
+
+    /*private void computerTurn() {
 
         Log.d(TAG, "computerTurn called ");
 
@@ -123,7 +237,7 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
-    }
+    }*/
 
     public void holdButtonClick(View view) {
 
