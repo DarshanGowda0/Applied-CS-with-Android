@@ -73,14 +73,31 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void computerTurn() {
-        
+
     }
 
     public void holdButtonClick(View view) {
 
+        userOverallScore += userTurnScore;
+        userTurnScore = 0;
+
+        labelText = userScoreLabel + userOverallScore + compScoreLabel + computerOverallScore + userTurnScoreLabel + userTurnScore;
+        label.setText(Html.fromHtml(labelText));
+
+
+        computerTurn();
     }
 
     public void resetButtonClick(View view) {
+
+        userOverallScore = 0;
+        userTurnScore = 0;
+        computerOverallScore = 0;
+        computerTurnScore = 0;
+
+        labelText = userScoreLabel + userOverallScore + compScoreLabel + computerOverallScore;
+        label.setText(Html.fromHtml(labelText));
+
 
     }
 
