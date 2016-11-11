@@ -69,6 +69,7 @@ public class GhostActivity extends AppCompatActivity {
     /**
      * Handler for the "Reset" button.
      * Randomly determines whether the game starts with a user turn or a computer turn.
+     *
      * @param view
      * @return true
      */
@@ -87,8 +88,35 @@ public class GhostActivity extends AppCompatActivity {
     }
 
     private void computerTurn() {
-        TextView label = (TextView) findViewById(R.id.gameStatus);
         // Do computer turn stuff then make it the user's turn again
+
+        //fetch the existing word
+        String word = ghostTv.getText().toString();
+
+        //if the word in completed(valid word)
+        if (dictionary.isWord(word) && word.length() >= 4) {
+            label.setText("Computer won");
+        }
+        //else get the existing word and check for its prefix
+        else {
+
+            String longerWord = dictionary.getAnyWordStartingWith(word);
+
+            //if the word with the existing word as prefix exists then add the
+            //next character to the existing word
+            if (longerWord != null) {
+                char nextChar = longerWord.charAt(word.length());
+                word += nextChar;
+                ghostTv.setText(word);
+                label.setText(USER_TURN);
+            } else {
+
+                //if no word exists with the entered word as a prefix then tell the user that he can't make up words which are not in dictionary
+                label.setText("you can't bluff this , you lost");
+            }
+        }
+
+
         userTurn = true;
         label.setText(USER_TURN);
     }
@@ -96,7 +124,7 @@ public class GhostActivity extends AppCompatActivity {
     @Override
     public boolean onKeyUp(int keyCode, KeyEvent event) {
 
-        Log.d("TAG", "onKeyUp: " + keyCode + " " + (char) event.getUnicodeChar());
+        Log.d("TAG", "onKeyUp: "+keyCode+" "+ (char) event.getUnicodeChar());
 
         char keyPressed = (char) event.getUnicodeChar();
 
