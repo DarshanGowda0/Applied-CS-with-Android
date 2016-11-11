@@ -3,6 +3,8 @@ package com.google.engedu.ghost;
 import android.content.res.AssetManager;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -21,14 +23,21 @@ public class GhostActivity extends AppCompatActivity {
     private boolean userTurn = false;
     private Random random = new Random();
 
+    TextView ghostTv, label;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ghost);
+
+        //Link views using fv
+        ghostTv = (TextView) findViewById(R.id.ghostText);
+        label = (TextView) findViewById(R.id.gameStatus);
+
         AssetManager assetManager = getAssets();
         try {
             InputStream inputStream = assetManager.open("words.txt");
-            dictionary = new FastDictionary(inputStream);
+            dictionary = new SimpleDictionary(inputStream);
         } catch (IOException e) {
             Toast toast = Toast.makeText(this, "Could not load dictionary", Toast.LENGTH_LONG);
             toast.show();
@@ -45,7 +54,7 @@ public class GhostActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        
+
         int id = item.getItemId();
 
 
@@ -82,5 +91,35 @@ public class GhostActivity extends AppCompatActivity {
         // Do computer turn stuff then make it the user's turn again
         userTurn = true;
         label.setText(USER_TURN);
+    }
+
+    @Override
+    public boolean onKeyUp(int keyCode, KeyEvent event) {
+
+        Log.d("TAG", "onKeyUp: " + keyCode + " " + (char) event.getUnicodeChar());
+
+        char keyPressed = (char) event.getUnicodeChar();
+
+        if (Character.isLetter(keyPressed)) {
+            String existingWord = ghostTv.getText().toString();
+            existingWord += keyPressed;
+            ghostTv.setText(existingWord);
+
+
+            //call the computer turn
+            computerTurn();
+            //check for the validity
+            if (dictionary.isWord(existingWord)) {
+                label.setText("VALID WORD");
+            } else
+                label.setText("INVALID WORD");
+            return true;
+        } else
+
+            return super.onKeyUp(keyCode, event);
+    }
+
+    public void challenge(View view) {
+
     }
 }
