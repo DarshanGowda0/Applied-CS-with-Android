@@ -95,6 +95,7 @@ public class GhostActivity extends AppCompatActivity {
 
         //if the word in completed(valid word)
         if (dictionary.isWord(word) && word.length() >= 4) {
+            Log.d("TAG", "computerTurn: true");
             label.setText("Computer won");
         }
         //else get the existing word and check for its prefix
@@ -118,7 +119,7 @@ public class GhostActivity extends AppCompatActivity {
 
 
         userTurn = true;
-        label.setText(USER_TURN);
+       // label.setText(USER_TURN);
     }
 
     @Override
@@ -137,10 +138,10 @@ public class GhostActivity extends AppCompatActivity {
             //call the computer turn
             computerTurn();
             //check for the validity
-            if (dictionary.isWord(existingWord)) {
+           /* if (dictionary.isWord(existingWord)) {
                 label.setText("VALID WORD");
             } else
-                label.setText("INVALID WORD");
+                label.setText("INVALID WORD");*/
             return true;
         } else
 
