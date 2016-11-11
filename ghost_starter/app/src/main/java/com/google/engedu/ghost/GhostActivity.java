@@ -149,5 +149,25 @@ public class GhostActivity extends AppCompatActivity {
 
     public void challenge(View view) {
 
+        //get the existing word
+        String currentWord = ghostTv.getText().toString();
+
+        //if the word is a valid word then the challenge is successful
+        if (currentWord.length() > 3 && dictionary.isWord(currentWord)) {
+            label.setText("you won");
+        } else  {
+            // if a word can be formed with the fragment as prefix, declare victory for the computer and display a possible word
+            String anotherWord = dictionary.getAnyWordStartingWith(currentWord);
+            if (anotherWord != null) {
+                label.setText("computer won");
+                ghostTv.setText(anotherWord);
+            }
+            //If a word cannot be formed with the fragment, declare victory for the user
+            else {
+                label.setText("you won, computer lost this game");
+            }
+        }
+
+
     }
 }
