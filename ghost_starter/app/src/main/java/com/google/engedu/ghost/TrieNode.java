@@ -1,6 +1,8 @@
 package com.google.engedu.ghost;
 
 import java.util.HashMap;
+import java.util.Random;
+import java.util.Set;
 
 
 public class TrieNode {
@@ -38,7 +40,7 @@ public class TrieNode {
 
     public boolean isWord(String s) {
 
-        //get the current node of that object
+        //get the root node of this object
         TrieNode currentNode = this;
         String key;
 
@@ -68,7 +70,45 @@ public class TrieNode {
     }
 
     public String getAnyWordStartingWith(String s) {
-        return null;
+        //fetch the current node of that object
+        TrieNode currentNode = this;
+
+        //a set to fetch all the keys of the last node( char)
+        Set keyList;
+
+        String key;
+        String word = "";
+
+
+        if (!s.isEmpty()) {
+
+            //loop through the characters of the prefix s
+            for (int i = 0; i < s.length(); i++) {
+
+                key = "" + s.charAt(i);
+                //add the char to the word to be returned
+                word += key;
+                //check if that char is present as a key, if not then that word is not a valid word so break out and return
+                if (currentNode.children.containsKey(key)) {
+                    currentNode = currentNode.children.get(key);
+                } else {
+                    return null;
+                }
+
+            }
+        }
+
+        //after you have obtained the last node in the prefix word
+        //then get all the next keys possible and select a random next key till that word is completed( i.e check for the boolean isWord)
+        while (!currentNode.isWord) {
+            keyList = currentNode.children.keySet();
+            key = keyList.toArray()[new Random().nextInt(keyList.size())].toString();
+            word += key;
+            currentNode = currentNode.children.get(key);
+        }
+
+        return word;
+
     }
 
     public String getGoodWordStartingWith(String s) {
