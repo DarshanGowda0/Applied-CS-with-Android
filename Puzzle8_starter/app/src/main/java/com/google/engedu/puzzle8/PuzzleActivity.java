@@ -8,7 +8,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 
@@ -18,14 +17,14 @@ public class PuzzleActivity extends AppCompatActivity {
     private Bitmap imageBitmap = null;
     private PuzzleBoardView boardView;
 
-    ImageView imageView;
+//    ImageView imageView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_puzzle);
 
-        imageView = (ImageView) findViewById(R.id.imageView);
+//        imageView = (ImageView) findViewById(R.id.imageView);
 
         // This code programmatically adds the PuzzleBoardView to the UI.
         RelativeLayout container = (RelativeLayout) findViewById(R.id.puzzle_container);
@@ -71,8 +70,8 @@ public class PuzzleActivity extends AppCompatActivity {
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
             Bundle extras = data.getExtras();
             Bitmap imageBitmap = (Bitmap) extras.get("data");
-//            boardView.initialize(imageBitmap, boardView);
-            imageView.setImageBitmap(imageBitmap);
+            boardView.initialize(imageBitmap);
+//            imageView.setImageBitmap(imageBitmap);
         }
     }
 

@@ -18,6 +18,33 @@ public class PuzzleBoard {
     private ArrayList<PuzzleTile> tiles;
 
     PuzzleBoard(Bitmap bitmap, int parentWidth) {
+
+        tiles = new ArrayList<>();
+
+        //for numbering the original tile numbers
+        int numTile = 0;
+
+        //make the captured image into a square , i.e same width and height
+        Bitmap sqBitmap = Bitmap.createScaledBitmap(bitmap, parentWidth, parentWidth, true);
+
+        //make 9 tiles, calculating their respective widths and heights
+        for (int i = 0; i < NUM_TILES; i++) {
+            for (int j = 0; j < NUM_TILES; j++) {
+
+                //use ctrl+P or cmd+P to view the params
+                //fromX, fromY, toX, toY co-ordinates
+                Bitmap sclBitmap = Bitmap.createBitmap(sqBitmap, (parentWidth / NUM_TILES) * j, (parentWidth / NUM_TILES) * i, (parentWidth / NUM_TILES), (parentWidth / NUM_TILES));
+                PuzzleTile puzzleTile = new PuzzleTile(sclBitmap, numTile);
+                numTile++;
+                tiles.add(puzzleTile);
+            }
+        }
+        tiles.set((NUM_TILES * NUM_TILES) - 1, null);
+
+
+        // if not copy constructor keep this as zero(not needed)
+//        steps = 0;
+
     }
 
     PuzzleBoard(PuzzleBoard otherBoard) {
