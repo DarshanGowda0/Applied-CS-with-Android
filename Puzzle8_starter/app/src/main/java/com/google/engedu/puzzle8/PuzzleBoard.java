@@ -162,7 +162,40 @@ public class PuzzleBoard {
     }
 
     public int priority() {
-        return 0;
+        int manhattanValue = 0;
+
+        int originalX;
+        int originalY;
+
+        int presentX;
+        int presentY;
+
+        for (int i = 0; i < NUM_TILES * NUM_TILES; i++) {
+
+            //get the present positions
+            presentX = i / NUM_TILES;
+            presentY = i % NUM_TILES;
+
+            //get the actual positions
+            if (tiles.get(i) != null) {
+                originalX = tiles.get(i).getNumber() / NUM_TILES;
+                originalY = tiles.get(i).getNumber() % NUM_TILES;
+            } else {
+                //replace 8 by (NUM_TILES*NUM_TILES - 1) 
+                originalX = 8 / NUM_TILES;
+                originalY = 8 % NUM_TILES;
+            }
+
+            //add the difference to the manhattan value
+            manhattanValue += Math.abs(originalX - presentX);
+            manhattanValue += Math.abs(originalY - presentY);
+        }
+
+
+        //finally add it to the number of steps taken to reach the present position
+        manhattanValue += steps;
+
+        return manhattanValue;
     }
 
 }
