@@ -138,10 +138,10 @@ public class GhostActivity extends AppCompatActivity {
             //call the computer turn
             computerTurn();
             //check for the validity
-            if (dictionary.isWord(existingWord)) {
-                label.setText("VALID WORD");
-            } else
-                label.setText("INVALID WORD");
+//            if (dictionary.isWord(existingWord)) {
+//                label.setText("VALID WORD");
+//            } else
+//                label.setText("INVALID WORD");
             return true;
         } else
 
