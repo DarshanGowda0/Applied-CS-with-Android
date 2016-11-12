@@ -17,6 +17,9 @@ public class PuzzleBoard {
     };
     private ArrayList<PuzzleTile> tiles;
 
+    private int steps;
+    private PuzzleBoard previousBoard;
+
     PuzzleBoard(Bitmap bitmap, int parentWidth) {
 
         tiles = new ArrayList<>();
@@ -45,12 +48,15 @@ public class PuzzleBoard {
 
 
         // if not copy constructor keep this as zero(not needed)
-//        steps = 0;
+        steps = 0;
 
     }
 
     PuzzleBoard(PuzzleBoard otherBoard) {
         tiles = (ArrayList<PuzzleTile>) otherBoard.tiles.clone();
+
+        steps = otherBoard.steps + 1;
+        previousBoard = otherBoard;
     }
 
     public void reset() {
