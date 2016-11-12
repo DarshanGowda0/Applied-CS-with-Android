@@ -37,7 +37,7 @@ public class GhostActivity extends AppCompatActivity {
         AssetManager assetManager = getAssets();
         try {
             InputStream inputStream = assetManager.open("words.txt");
-            dictionary = new SimpleDictionary(inputStream);
+            dictionary = new FastDictionary(inputStream);
         } catch (IOException e) {
             Toast toast = Toast.makeText(this, "Could not load dictionary", Toast.LENGTH_LONG);
             toast.show();
@@ -138,10 +138,10 @@ public class GhostActivity extends AppCompatActivity {
             //call the computer turn
             computerTurn();
             //check for the validity
-           /* if (dictionary.isWord(existingWord)) {
+            if (dictionary.isWord(existingWord)) {
                 label.setText("VALID WORD");
             } else
-                label.setText("INVALID WORD");*/
+                label.setText("INVALID WORD");
             return true;
         } else
 
