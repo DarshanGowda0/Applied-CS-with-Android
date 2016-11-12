@@ -39,6 +39,8 @@ public class PuzzleBoard {
                 tiles.add(puzzleTile);
             }
         }
+
+        //make the last tile as a null tile object
         tiles.set((NUM_TILES * NUM_TILES) - 1, null);
 
 
@@ -120,7 +122,37 @@ public class PuzzleBoard {
     }
 
     public ArrayList<PuzzleBoard> neighbours() {
-        return null;
+
+        int nullTileNumber = 0;
+        ArrayList<PuzzleBoard> validBoard = new ArrayList<>();
+
+        //find the null tile
+        while (tiles.get(nullTileNumber) != null) {
+            nullTileNumber++;
+        }
+
+        //loop through NEIGHBOUR_COORDS to find the valid moves
+        for (int j = 0; j < 4; j++) {
+
+            // XYtoIndex => x + (y * NUM_TILES)
+            int validMove = XYtoIndex(NEIGHBOUR_COORDS[j][0], NEIGHBOUR_COORDS[j][1]) + nullTileNumber;
+
+            if (validMove > -1 && validMove < 9) {
+
+                //make a copy of the current board
+                PuzzleBoard copy = new PuzzleBoard(this);
+
+                //swap the null tile to a validMove found out
+                copy.swapTiles(nullTileNumber, validMove);
+
+                //copy the valid swapped tile configuration of the puzzleBoard to the arrayList to be returned
+                validBoard.add(copy);
+            }
+        }
+
+        //return the array of valid moves
+        return validBoard;
+
     }
 
     public int priority() {

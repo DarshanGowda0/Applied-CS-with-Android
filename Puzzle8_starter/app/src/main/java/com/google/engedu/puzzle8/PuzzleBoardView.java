@@ -53,7 +53,15 @@ public class PuzzleBoardView extends View {
     public void shuffle() {
         if (animation == null && puzzleBoard != null) {
             // Do something. Then:
-            puzzleBoard.reset();
+            for (int i = 0; i < NUM_SHUFFLE_STEPS; i++) {
+                //get the valid adjacent tiles
+                ArrayList<PuzzleBoard> validMoves = puzzleBoard.neighbours();
+
+                //select a random tile in that
+                puzzleBoard = validMoves.get(random.nextInt(validMoves.size()));
+            }
+
+            //to redraw/refresh the puzzleBoardView which is .this view
             invalidate();
         }
     }
