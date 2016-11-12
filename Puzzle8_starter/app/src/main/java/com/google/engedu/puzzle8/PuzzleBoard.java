@@ -10,15 +10,19 @@ public class PuzzleBoard {
 
     private static final int NUM_TILES = 3;
     private static final int[][] NEIGHBOUR_COORDS = {
-            { -1, 0 },
-            { 1, 0 },
-            { 0, -1 },
-            { 0, 1 }
+            {-1, 0},
+            {1, 0},
+            {0, -1},
+            {0, 1}
     };
     private ArrayList<PuzzleTile> tiles;
 
-    private int steps;
-    private PuzzleBoard previousBoard;
+    int steps;
+    PuzzleBoard previousBoard;
+
+    public PuzzleBoard getPreviousBoard() {
+        return previousBoard;
+    }
 
     PuzzleBoard(Bitmap bitmap, int parentWidth) {
 
@@ -181,7 +185,7 @@ public class PuzzleBoard {
                 originalX = tiles.get(i).getNumber() / NUM_TILES;
                 originalY = tiles.get(i).getNumber() % NUM_TILES;
             } else {
-                //replace 8 by (NUM_TILES*NUM_TILES - 1) 
+                //replace 8 by (NUM_TILES*NUM_TILES - 1)
                 originalX = 8 / NUM_TILES;
                 originalY = 8 % NUM_TILES;
             }
